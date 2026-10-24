@@ -2,71 +2,129 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b6e4f">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a5c43">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <title>باقتي</title>
 <style>
-  :root{--g:#0b6e4f;--bg:#f2f5f4;--card:#fff;--tx:#17211d;--mut:#6b7a74}
-  *{box-sizing:border-box;font-family:system-ui,"Segoe UI",Tahoma,sans-serif}
-  body{margin:0;background:var(--bg);color:var(--tx)}
-  header{background:var(--g);color:#fff;padding:18px;text-align:center;font-size:20px;font-weight:700}
-  main{max-width:480px;margin:0 auto;padding:16px}
-  .card{background:var(--card);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
-  label{display:block;margin:10px 0 4px;color:var(--mut);font-size:14px}
-  input{width:100%;padding:12px;border:1px solid #cfd8d4;border-radius:10px;font-size:16px}
-  button{width:100%;margin-top:14px;padding:13px;border:0;border-radius:10px;background:var(--g);color:#fff;font-size:17px;font-weight:700}
-  button:disabled{background:#b9c7c1}
-  button.sec{background:#e4ece8;color:var(--g)}
-  .big{font-size:42px;font-weight:800;color:var(--g);text-align:center}
-  .sub{text-align:center;color:var(--mut)}
-  .bar{height:14px;background:#e1e8e5;border-radius:8px;overflow:hidden;margin:12px 0}
-  .bar>div{height:100%;background:var(--g);transition:width .6s}
-  .row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eef2f0}
+  :root{
+    --g1:#0a5c43; --g2:#12a37a; --g3:#e7f5ef;
+    --bg:#f1f5f3; --card:#ffffff; --tx:#14201b; --mut:#667873; --line:#e3ebe7;
+    --err:#b3261e;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:system-ui,"Segoe UI",Tahoma,Arial,sans-serif}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--tx);min-height:100vh}
+  .top{
+    background:linear-gradient(160deg,var(--g1),var(--g2));
+    color:#fff;padding:calc(env(safe-area-inset-top) + 16px) 18px 70px;
+    position:relative;
+  }
+  .top-row{display:flex;align-items:center;justify-content:space-between;max-width:480px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:800}
+  .brand svg{width:30px;height:30px}
+  .gear{width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;display:flex;align-items:center;justify-content:center;padding:0;margin:0}
+  .gear svg{width:22px;height:22px}
+  .gear.hide{visibility:hidden}
+  main{max-width:480px;margin:-52px auto 0;padding:0 16px 32px;position:relative}
+  .card{background:var(--card);border-radius:22px;padding:22px;margin-bottom:14px;box-shadow:0 6px 22px rgba(10,60,45,.10)}
+  h2{margin:0 0 6px;font-size:20px}
+  h3{margin:0 0 8px;font-size:17px}
+  p{margin:0 0 14px;color:var(--mut);line-height:1.7;font-size:15px}
+  label{display:block;margin:12px 0 6px;color:var(--mut);font-size:14px;font-weight:600}
+  input{width:100%;padding:14px;border:1.5px solid var(--line);border-radius:14px;font-size:17px;background:#fafcfb;outline:none;direction:ltr;text-align:left}
+  input:focus{border-color:var(--g2);background:#fff}
+  button{width:100%;margin-top:14px;padding:15px;border:0;border-radius:14px;background:linear-gradient(160deg,var(--g1),var(--g2));color:#fff;font-size:17px;font-weight:700;cursor:pointer}
+  button:active{transform:scale(.985)}
+  button:disabled{background:#c3d0ca;cursor:default}
+  button.sec{background:var(--g3);color:var(--g1)}
+  .hide{display:none!important}
+  .err{color:var(--err);text-align:center;min-height:22px;margin-top:8px;font-size:14px}
+  .note{font-size:13px;color:var(--mut);text-align:center;margin-top:10px;line-height:1.7}
+  .hero{text-align:center;padding:30px 22px 26px}
+  .bigbtn{
+    width:170px;height:170px;border-radius:50%;margin:16px auto 40px;padding:0;
+    display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;
+    background:radial-gradient(circle at 30% 25%,#1fc093,var(--g1) 75%);
+    box-shadow:0 0 0 12px rgba(18,163,122,.12),0 0 0 26px rgba(18,163,122,.06),0 14px 30px rgba(10,92,67,.35);
+    color:#fff;
+  }
+  .bigbtn svg{width:70px;height:70px}
+  .bigbtn span{font-size:19px;font-weight:800}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:var(--g3);color:var(--g1);padding:8px 14px;border-radius:999px;font-size:14px;font-weight:700;direction:ltr}
+  .chip i{width:9px;height:9px;border-radius:50%;background:var(--g2);display:inline-block}
+  .illus{width:84px;height:84px;margin:0 auto 12px;border-radius:24px;background:var(--g3);display:flex;align-items:center;justify-content:center}
+  .illus svg{width:48px;height:48px;color:var(--g1)}
+  details{margin-top:12px}
+  summary{color:var(--g1);font-weight:700;font-size:14px;cursor:pointer;padding:6px 0}
+  .row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
   .row:last-child{border:0}
-  .note{font-size:13px;color:var(--mut);text-align:center;margin-top:8px}
-  .hide{display:none}
-  #msg{color:#b3261e;text-align:center;margin-top:8px;min-height:20px}
-  h3{margin:0 0 6px;font-size:17px}
-  .opt{display:flex;justify-content:space-between;align-items:center;width:100%;margin:8px 0 0;padding:14px;background:#fff;color:var(--tx);border:2px solid #d5dfda;font-weight:600;font-size:16px}
-  .opt.on{border-color:var(--g);background:#e8f3ee}
-  .opt small{color:var(--mut);font-weight:400}
-  .check{text-align:center;font-size:56px;color:var(--g)}
+  .opt{display:flex;justify-content:space-between;align-items:center;width:100%;margin:8px 0 0;padding:15px;background:#fff;color:var(--tx);border:2px solid var(--line);font-weight:700;font-size:16px}
+  .opt.on{border-color:var(--g2);background:var(--g3)}
+  .opt small{color:var(--mut);font-weight:500;font-size:14px}
+  .check{width:84px;height:84px;margin:0 auto 12px;border-radius:50%;background:var(--g3);color:var(--g1);display:flex;align-items:center;justify-content:center;font-size:46px}
+  .center{text-align:center}
 </style>
 </head>
 <body>
-<header>باقتي</header>
+
+<div class="top">
+  <div class="top-row">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M2 8.8a15 15 0 0 1 20 0"/><path d="M5.5 12.4a10 10 0 0 1 13 0"/><path d="M9 16a5 5 0 0 1 6 0"/><circle cx="12" cy="19.5" r="1" fill="#fff"/></svg>
+      باقتي
+    </div>
+    <button class="gear hide" id="gear" onclick="openSetup(true)" aria-label="الإعدادات">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+    </button>
+  </div>
+</div>
+
 <main>
 
-  <section id="login" class="card">
-    <label>اسم المستخدم</label>
-    <input id="u" autocomplete="username" placeholder="مثال: demo">
-    <label>كلمة السر</label>
-    <input id="p" type="password" autocomplete="current-password" placeholder="مثال: 1234">
-    <button onclick="doLogin()">دخول</button>
-    <div id="msg"></div>
-    <div class="note">نسخة تجريبية: ادخل بـ demo و 1234</div>
+  <!-- شاشة الإعداد: التسجيل بالجيتواي بس -->
+  <section id="setup" class="card hide">
+    <div class="center">
+      <div class="illus">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 16.5h.01M11 16.5h.01"/><path d="M8 13V9M16 13V9"/><path d="M5.5 6.5a9 9 0 0 1 13 0"/></svg>
+      </div>
+      <h2>ربط التطبيق بالشبكة</h2>
+      <p>اكتب عنوان الجيتواي (Gateway) بتاع السيرفر مرة واحدة بس، ومش هتحتاج تسجل تاني.</p>
+    </div>
+    <label for="gw">عنوان الجيتواي</label>
+    <input id="gw" inputmode="decimal" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="192.168.88.1">
+    <details>
+      <summary>إعدادات متقدمة (اختياري)</summary>
+      <label for="path">مسار صفحة معلومات العميل</label>
+      <input id="path" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="سيبه فاضي لو الصفحة على العنوان الرئيسي">
+    </details>
+    <button onclick="saveSetup()">حفظ ومتابعة</button>
+    <div class="err" id="err"></div>
+    <div class="note">هتلاقي الجيتواي في إعدادات الواي فاي على موبايلك، وانت متصل بالشبكة.</div>
   </section>
 
+  <!-- الشاشة الرئيسية -->
   <section id="home" class="hide">
-    <div class="card">
-      <div class="sub">المتبقي من الباقة</div>
-      <div class="big"><span id="left">0</span> جيجا</div>
-      <div class="bar"><div id="fill"></div></div>
-      <div class="sub">من إجمالي <span id="total">0</span> جيجا</div>
+    <div class="card hero">
+      <button class="bigbtn" onclick="openInfo()" aria-label="معلومات العميل">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        <span>معلوماتي</span>
+      </button>
+      <p style="margin-bottom:14px">اضغط على الأيقونة عشان تشوف باقتك والجيجا المتبقية وتاريخ الانتهاء</p>
+      <div class="chip"><i></i><span id="gwShow"></span></div>
     </div>
+
     <div class="card">
-      <div class="row"><span>اسم المشترك</span><b id="name"></b></div>
-      <div class="row"><span>الباقة</span><b id="plan"></b></div>
-      <div class="row"><span>تاريخ الانتهاء</span><b id="exp"></b></div>
-      <div class="row"><span>الأيام المتبقية</span><b id="days"></b></div>
+      <h3>تجديد الاشتراك</h3>
+      <p style="margin-bottom:4px">جدد باقتك بسهولة عن طريق محفظة كاش.</p>
+      <button class="sec" onclick="openRenew()">تجديد عن طريق المحفظة</button>
     </div>
-    <button onclick="openRenew()">تجديد الاشتراك (محفظة كاش)</button>
-    <button class="sec" onclick="logout()">خروج</button>
-    <div class="note">البيانات الحالية تجريبية، هنربطها بالشبكة الحقيقية بعدين</div>
+
+    <div class="note">لازم تكون متصل بواي فاي الشبكة عشان صفحة المعلومات تفتح.</div>
   </section>
 
+  <!-- شاشة التجديد -->
   <section id="renew" class="hide">
     <div class="card">
       <h3>1) اختار الباقة</h3>
@@ -83,27 +141,27 @@
     </div>
     <button id="confirm" disabled onclick="confirmOrder()">تأكيد الطلب</button>
     <button class="sec" onclick="show('home')">رجوع</button>
-    <div class="note">الأسعار تجريبية، ومفيش دفع حقيقي بيحصل في النسخة دي</div>
+    <div class="note">الأسعار تجريبية، ومفيش دفع حقيقي بيحصل في النسخة دي.</div>
   </section>
 
+  <!-- تم الطلب -->
   <section id="done" class="hide">
-    <div class="card">
+    <div class="card center">
       <div class="check">✓</div>
-      <h3 style="text-align:center">تم استلام طلب التجديد</h3>
-      <div class="row"><span>الباقة</span><b id="dPlan"></b></div>
-      <div class="row"><span>المحفظة</span><b id="dWallet"></b></div>
-      <div class="row"><span>المبلغ</span><b id="dPrice"></b></div>
+      <h2>تم استلام طلب التجديد</h2>
+      <div style="text-align:right;margin-top:10px">
+        <div class="row"><span>الباقة</span><b id="dPlan"></b></div>
+        <div class="row"><span>المحفظة</span><b id="dWallet"></b></div>
+        <div class="row"><span>المبلغ</span><b id="dPrice"></b></div>
+      </div>
     </div>
     <div class="note">ده عرض تجريبي: مفيش دفع حقيقي حصل ولا الاشتراك اتغير.</div>
     <button onclick="show('home')">رجوع للرئيسية</button>
   </section>
 
 </main>
+
 <script>
-  // بيانات تجريبية (هتتبدل ببيانات الشبكة الحقيقية بعدين)
-  var USERS = {
-    demo: {pass:"1234", name:"مشترك تجريبي", plan:"باقة 100 جيجا", total:100, used:37, exp:"2026-11-15"}
-  };
   var PLANS = [
     {name:"باقة 50 جيجا", price:100},
     {name:"باقة 100 جيجا", price:180},
@@ -113,66 +171,90 @@
   var selPlan = null, selWallet = null;
 
   function $(id){return document.getElementById(id)}
-  function show(id){["login","home","renew","done"].forEach(function(s){$(s).classList.toggle("hide", s!==id)}); window.scrollTo(0,0)}
   function digits(s){return s.replace(/[٠-٩]/g,function(c){return c.charCodeAt(0)-1632})}
+  function store(k,v){try{if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){}}
+  function load(k){try{return localStorage.getItem(k)||""}catch(e){return ""}}
 
-  function doLogin(){
-    var u=digits($("u").value.trim().toLowerCase()), p=digits($("p").value);
-    var d=USERS[u];
-    if(!d||d.pass!==p){$("msg").textContent="اسم المستخدم أو كلمة السر غلط";return}
-    $("msg").textContent="";
-    try{localStorage.setItem("user",u)}catch(e){}
-    render(u);
+  function show(id){
+    ["setup","home","renew","done"].forEach(function(s){$(s).classList.toggle("hide", s!==id)});
+    $("gear").classList.toggle("hide", id==="setup");
+    window.scrollTo(0,0);
   }
-  function render(u){
-    var d=USERS[u]; if(!d){show("login");return}
-    var left=(d.total-d.used).toFixed(1);
-    $("left").textContent=left;
-    $("total").textContent=d.total;
-    $("fill").style.width=Math.max(0,(left/d.total*100))+"%";
-    $("name").textContent=d.name;
-    $("plan").textContent=d.plan;
-    $("exp").textContent=d.exp;
-    var days=Math.ceil((new Date(d.exp)-new Date())/86400000);
-    $("days").textContent=days>0?days+" يوم":"منتهي";
+
+  function cleanGw(v){
+    v = digits(v).trim().replace(/\s+/g,"").replace(/^https?:\/\//i,"").replace(/\/+$/,"");
+    return v;
+  }
+  function buildUrl(){
+    var gw = load("gw"), path = load("path");
+    if(!gw) return "";
+    var url = "http://" + gw;
+    if(path){ url += (path.charAt(0)==="/" ? "" : "/") + path; }
+    else url += "/";
+    return url;
+  }
+
+  function openSetup(editing){
+    $("gw").value = editing ? load("gw") : "";
+    $("path").value = editing ? load("path") : "";
+    $("err").textContent = "";
+    show("setup");
+  }
+  function saveSetup(){
+    var gw = cleanGw($("gw").value);
+    var path = digits($("path").value).trim();
+    if(!gw){ $("err").textContent = "اكتب عنوان الجيتواي الأول"; return }
+    if(!/^[A-Za-z0-9.\-:]+$/.test(gw)){ $("err").textContent = "العنوان فيه حروف غلط، اكتبه زي كده: 192.168.88.1"; return }
+    store("gw", gw); store("path", path);
+    goHome();
+  }
+  function goHome(){
+    $("gwShow").textContent = load("gw");
     show("home");
+  }
+  function openInfo(){
+    var url = buildUrl();
+    if(!url){ openSetup(false); return }
+    var w = null;
+    try{ w = window.open(url, "_blank"); }catch(e){}
+    if(!w){ window.location.href = url; }
   }
 
   function makeOpt(parent, text, extra, onPick){
-    var b=document.createElement("button");
-    b.className="opt"; b.type="button";
-    var a=document.createElement("span"); a.textContent=text; b.appendChild(a);
-    if(extra){var s=document.createElement("small"); s.textContent=extra; b.appendChild(s)}
-    b.onclick=function(){
+    var b = document.createElement("button");
+    b.className = "opt"; b.type = "button";
+    var a = document.createElement("span"); a.textContent = text; b.appendChild(a);
+    if(extra){ var s = document.createElement("small"); s.textContent = extra; b.appendChild(s) }
+    b.onclick = function(){
       Array.prototype.forEach.call(parent.children,function(x){x.classList.remove("on")});
       b.classList.add("on"); onPick();
     };
     parent.appendChild(b);
   }
   function openRenew(){
-    selPlan=null; selWallet=null;
-    var pl=$("plans"), wl=$("wallets");
-    pl.innerHTML=""; wl.innerHTML="";
+    selPlan = null; selWallet = null;
+    var pl = $("plans"), wl = $("wallets");
+    pl.innerHTML = ""; wl.innerHTML = "";
     PLANS.forEach(function(p){makeOpt(pl,p.name,p.price+" جنيه",function(){selPlan=p;update()})});
     WALLETS.forEach(function(w){makeOpt(wl,w,"",function(){selWallet=w;update()})});
     update(); show("renew");
   }
   function update(){
-    $("sPlan").textContent=selPlan?selPlan.name:"لم تُختر";
-    $("sWallet").textContent=selWallet?selWallet:"لم تُختر";
-    $("sPrice").textContent=selPlan?selPlan.price+" جنيه":"-";
-    $("confirm").disabled=!(selPlan&&selWallet);
+    $("sPlan").textContent = selPlan ? selPlan.name : "لم تُختر";
+    $("sWallet").textContent = selWallet ? selWallet : "لم تُختر";
+    $("sPrice").textContent = selPlan ? selPlan.price+" جنيه" : "-";
+    $("confirm").disabled = !(selPlan && selWallet);
   }
   function confirmOrder(){
-    if(!(selPlan&&selWallet)) return;
-    $("dPlan").textContent=selPlan.name;
-    $("dWallet").textContent=selWallet;
-    $("dPrice").textContent=selPlan.price+" جنيه";
+    if(!(selPlan && selWallet)) return;
+    $("dPlan").textContent = selPlan.name;
+    $("dWallet").textContent = selWallet;
+    $("dPrice").textContent = selPlan.price+" جنيه";
     show("done");
   }
 
-  function logout(){try{localStorage.removeItem("user")}catch(e){} show("login")}
-  try{var s=localStorage.getItem("user"); if(s) render(s)}catch(e){}
+  // بداية التطبيق
+  if(load("gw")) goHome(); else openSetup(false);
   if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){})}
 </script>
 </body>
