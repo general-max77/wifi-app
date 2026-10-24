@@ -17,6 +17,7 @@
   label{display:block;margin:10px 0 4px;color:var(--mut);font-size:14px}
   input{width:100%;padding:12px;border:1px solid #cfd8d4;border-radius:10px;font-size:16px}
   button{width:100%;margin-top:14px;padding:13px;border:0;border-radius:10px;background:var(--g);color:#fff;font-size:17px;font-weight:700}
+  button:disabled{background:#b9c7c1}
   button.sec{background:#e4ece8;color:var(--g)}
   .big{font-size:42px;font-weight:800;color:var(--g);text-align:center}
   .sub{text-align:center;color:var(--mut)}
@@ -27,6 +28,11 @@
   .note{font-size:13px;color:var(--mut);text-align:center;margin-top:8px}
   .hide{display:none}
   #msg{color:#b3261e;text-align:center;margin-top:8px;min-height:20px}
+  h3{margin:0 0 6px;font-size:17px}
+  .opt{display:flex;justify-content:space-between;align-items:center;width:100%;margin:8px 0 0;padding:14px;background:#fff;color:var(--tx);border:2px solid #d5dfda;font-weight:600;font-size:16px}
+  .opt.on{border-color:var(--g);background:#e8f3ee}
+  .opt small{color:var(--mut);font-weight:400}
+  .check{text-align:center;font-size:56px;color:var(--g)}
 </style>
 </head>
 <body>
@@ -56,9 +62,40 @@
       <div class="row"><span>تاريخ الانتهاء</span><b id="exp"></b></div>
       <div class="row"><span>الأيام المتبقية</span><b id="days"></b></div>
     </div>
-    <button onclick="renew()">تجديد الاشتراك (محفظة كاش)</button>
+    <button onclick="openRenew()">تجديد الاشتراك (محفظة كاش)</button>
     <button class="sec" onclick="logout()">خروج</button>
     <div class="note">البيانات الحالية تجريبية، هنربطها بالشبكة الحقيقية بعدين</div>
+  </section>
+
+  <section id="renew" class="hide">
+    <div class="card">
+      <h3>1) اختار الباقة</h3>
+      <div id="plans"></div>
+    </div>
+    <div class="card">
+      <h3>2) اختار المحفظة</h3>
+      <div id="wallets"></div>
+    </div>
+    <div class="card">
+      <div class="row"><span>الباقة</span><b id="sPlan">لم تُختر</b></div>
+      <div class="row"><span>المحفظة</span><b id="sWallet">لم تُختر</b></div>
+      <div class="row"><span>المبلغ</span><b id="sPrice">-</b></div>
+    </div>
+    <button id="confirm" disabled onclick="confirmOrder()">تأكيد الطلب</button>
+    <button class="sec" onclick="show('home')">رجوع</button>
+    <div class="note">الأسعار تجريبية، ومفيش دفع حقيقي بيحصل في النسخة دي</div>
+  </section>
+
+  <section id="done" class="hide">
+    <div class="card">
+      <div class="check">✓</div>
+      <h3 style="text-align:center">تم استلام طلب التجديد</h3>
+      <div class="row"><span>الباقة</span><b id="dPlan"></b></div>
+      <div class="row"><span>المحفظة</span><b id="dWallet"></b></div>
+      <div class="row"><span>المبلغ</span><b id="dPrice"></b></div>
+    </div>
+    <div class="note">ده عرض تجريبي: مفيش دفع حقيقي حصل ولا الاشتراك اتغير.</div>
+    <button onclick="show('home')">رجوع للرئيسية</button>
   </section>
 
 </main>
@@ -67,10 +104,20 @@
   var USERS = {
     demo: {pass:"1234", name:"مشترك تجريبي", plan:"باقة 100 جيجا", total:100, used:37, exp:"2026-11-15"}
   };
+  var PLANS = [
+    {name:"باقة 50 جيجا", price:100},
+    {name:"باقة 100 جيجا", price:180},
+    {name:"باقة 200 جيجا", price:320}
+  ];
+  var WALLETS = ["فودافون كاش", "أورنج كاش", "اتصالات كاش", "WE Pay"];
+  var selPlan = null, selWallet = null;
+
   function $(id){return document.getElementById(id)}
-  function show(id){["login","home"].forEach(function(s){$(s).classList.toggle("hide", s!==id)})}
+  function show(id){["login","home","renew","done"].forEach(function(s){$(s).classList.toggle("hide", s!==id)}); window.scrollTo(0,0)}
+  function digits(s){return s.replace(/[٠-٩]/g,function(c){return c.charCodeAt(0)-1632})}
+
   function doLogin(){
-    var u=$("u").value.trim().toLowerCase(), p=$("p").value;
+    var u=digits($("u").value.trim().toLowerCase()), p=digits($("p").value);
     var d=USERS[u];
     if(!d||d.pass!==p){$("msg").textContent="اسم المستخدم أو كلمة السر غلط";return}
     $("msg").textContent="";
@@ -90,7 +137,40 @@
     $("days").textContent=days>0?days+" يوم":"منتهي";
     show("home");
   }
-  function renew(){alert("التجديد عن طريق محفظة كاش هيتضاف في الخطوة الجاية")}
+
+  function makeOpt(parent, text, extra, onPick){
+    var b=document.createElement("button");
+    b.className="opt"; b.type="button";
+    var a=document.createElement("span"); a.textContent=text; b.appendChild(a);
+    if(extra){var s=document.createElement("small"); s.textContent=extra; b.appendChild(s)}
+    b.onclick=function(){
+      Array.prototype.forEach.call(parent.children,function(x){x.classList.remove("on")});
+      b.classList.add("on"); onPick();
+    };
+    parent.appendChild(b);
+  }
+  function openRenew(){
+    selPlan=null; selWallet=null;
+    var pl=$("plans"), wl=$("wallets");
+    pl.innerHTML=""; wl.innerHTML="";
+    PLANS.forEach(function(p){makeOpt(pl,p.name,p.price+" جنيه",function(){selPlan=p;update()})});
+    WALLETS.forEach(function(w){makeOpt(wl,w,"",function(){selWallet=w;update()})});
+    update(); show("renew");
+  }
+  function update(){
+    $("sPlan").textContent=selPlan?selPlan.name:"لم تُختر";
+    $("sWallet").textContent=selWallet?selWallet:"لم تُختر";
+    $("sPrice").textContent=selPlan?selPlan.price+" جنيه":"-";
+    $("confirm").disabled=!(selPlan&&selWallet);
+  }
+  function confirmOrder(){
+    if(!(selPlan&&selWallet)) return;
+    $("dPlan").textContent=selPlan.name;
+    $("dWallet").textContent=selWallet;
+    $("dPrice").textContent=selPlan.price+" جنيه";
+    show("done");
+  }
+
   function logout(){try{localStorage.removeItem("user")}catch(e){} show("login")}
   try{var s=localStorage.getItem("user"); if(s) render(s)}catch(e){}
   if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){})}
